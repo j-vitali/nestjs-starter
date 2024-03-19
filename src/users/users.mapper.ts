@@ -8,6 +8,7 @@ export class UserMapper {
     const userEntity = new UserEntity();
     userEntity.id = userDocument._id;
     userEntity.name = userDocument.name;
+    userEntity.fullname = userDocument.name +' '+ userDocument.surname;
     userEntity.surname = userDocument.surname;
     userEntity.nickname = userDocument.nickname;
     userEntity.status = userDocument.status;

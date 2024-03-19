@@ -7,6 +7,7 @@ export class UserEntity {
   industryType?: object | null;
   name!: string;
   surname!: string;
+  fullname: string;
   nickname!: string;
   status!: string;
   statusVerification?: string | null;
@@ -26,6 +27,7 @@ export class UserEntity {
   urlTwitter?: string | null;
   createdAt!: Date;
   updatedAt!: Date;
+
 
   // Method to populate the invitedBy field
   populateInvitedBy(invitedByData: any): void {

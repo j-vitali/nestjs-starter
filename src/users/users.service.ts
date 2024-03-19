@@ -35,9 +35,13 @@ export class UsersService {
     const users = await query.exec();
     const total = await this.userModel.countDocuments(filters);
 
-    return { data: users.map((user) => user.toObject()), total };
+    // Map the array of users to an array of UserEntity using the UserMapper
+    const mappedUsers = users.map(user => this.userMapper.mapDocumentToEntity(user));
+
+    return { data: mappedUsers, total };
   }
 
+  
   async findOne(id: string): Promise<UserEntity> {
     const user = await this.userModel
       .findById(id)
