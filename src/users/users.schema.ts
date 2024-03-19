@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { IndustryType } from './industry-type.schema';
 
 @Schema({
   collection: 'Profiles',
@@ -11,8 +12,12 @@ export class User extends Document {
   name: string;
 
   // Population
-  @Prop({ required: false, type: Types.ObjectId, ref: 'User' })
-  invitedBy: object;
+  @Prop({ required: false, type: Types.ObjectId, ref: User.name })
+  invitedBy: Types.ObjectId;  
+  
+  // Population from another collection (IndustryTypes)
+  @Prop({ required: false, type: Types.ObjectId, ref: 'IndustryType' })
+  industryType: Types.ObjectId;
 
   @Prop({ required: true })
   surname: string;

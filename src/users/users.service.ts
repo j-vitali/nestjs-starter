@@ -57,7 +57,10 @@ export class UsersService {
   async findOne(id: string): Promise<UserDocument> {
     // Add here custom logic
     const user = await this.userModel.findById(id)
-      .populate({path: 'invitedBy', select: 'name surname nickname avatar role'})
+      .populate([
+        { path: 'invitedBy', select: 'name surname nickname avatar role' },
+        { path: 'industryType', select: 'value' },
+      ])
       .exec();
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
