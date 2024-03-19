@@ -3,10 +3,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from './users.schema';
+import { User, UserDocument } from './users.schema';
 import { CreateUserEntity, UserEntity } from './entities/user.entity';
 import { UserDto } from './dto/user.dto';
 import { classToPlain, plainToClass, plainToInstance } from 'class-transformer';
+import { LogMethod } from '@common/utils/logger';
 
 
 
@@ -15,25 +16,27 @@ export class UsersService {
 
   constructor(
     @InjectModel(User.name)
-    private readonly userModel: Model<UserEntity>,
+    private readonly userModel: Model<UserDocument>,
   ) {}
 
+
+  @LogMethod()
   async create(
-    createUserEntity: CreateUserEntity,
-  ): Promise<UserEntity> {
+    createUserDto: CreateUserDto,
+  ) {
     // Add here custom logic
-    const createdUser =
-      await this.userModel.create(createUserEntity);
+    const createdUser = await this.userModel.create(createUserDto);
 
     return createdUser;
   }
+
 
 
   // Get all 
   async findAll(
     filters: any = {}, 
     pagination?: { skip: number; limit: number }):
-    Promise<{ data: UserEntity[]; total: number }> {
+    Promise<{ data: UserDocument[]; total: number }> {
     const { skip, limit } = pagination || {};
     
     console.log('filters-service', filters);
@@ -47,20 +50,10 @@ export class UsersService {
     const users = await query.exec();
     const total = await this.userModel.countDocuments(filters);
 
-        // // Choose mapper based on displayType
-        // let mapperFunction;
-        // let displayType = filters.displayType || 'demo';
-        // if (displayType === 'demo') {
-        //   mapperFunction = NameOnlyUserDtoMapper;
-        // } else {
-        //   mapperFunction = FullUserDtoMapper;
-        // }
-    //const usersDto: UserDto[] = plainToClass(UserDto, users, { enableCircularCheck: true });
-
     return { data: users, total };
   }
 
-  async findOne(id: string): Promise<UserEntity> {
+  async findOne(id: string): Promise<UserDocument> {
     // Add here custom logic
     const user = await this.userModel.findById(id);
     if (!user) {
@@ -70,12 +63,19 @@ export class UsersService {
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    return this.userModel.findByIdAndUpdate(id, updateUserDto);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(id: string): Promise<any> {
+    const document = await this.userModel.findByIdAndDelete(id).exec();
+    if (!document) {
+      return null;
+    }
+    return document;
   }
 
   // Function to check if ID exists

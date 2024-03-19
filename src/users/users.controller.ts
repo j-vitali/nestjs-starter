@@ -15,28 +15,17 @@ export class UsersController {
     ) {}
 
     
-  @Post()
-  @LogMethod()
-  async create(
-      @Body() createUserDto: CreateUserDto,
-    ): Promise<UserDto> {
-      const createdUser = await this.usersService.create({
-        ...createUserDto,
-        _id: new ObjectId,
-        invitedBy: undefined,
-        followersCommonTotal: 0,
-        followersCommon: [],
-        createdAt: undefined,
-        updatedAt: undefined
-      });
+    @Post()
+    @LogMethod()
+    async create(@Body() createUserDto: CreateUserDto) {
+      const createdUser = await this.usersService.create(createUserDto);
       console.log('createdUser', createdUser);
       return createdUser;
-  }
+    }
 
 
   @Get()
-  async findAll(@Query() query: FilterUserDto): 
-  Promise<PaginatedResponse<UserEntity>> {
+  async findAll(@Query() query: FilterUserDto){
     const { limit = 20, page = 1, ...filters } = query;
 
     // Call service method with filters and pagination options

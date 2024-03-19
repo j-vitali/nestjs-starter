@@ -1,69 +1,74 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString, IsNumber, IsNotEmpty, MinLength, MaxLength } from "class-validator";
 
 export class CreateUserDto {
     @IsString()
+    @IsNotEmpty()
+    @MinLength(5)
     name: string;
   
     @IsString()
+    @IsNotEmpty()
     surname: string;
   
     @IsString()
+    @IsNotEmpty()
     nickname: string;
   
     @IsString()
     @IsOptional()
-    bio: string;
+    @MinLength(5)
+    @MaxLength(300)
+    bio?: string;
   
     @IsString()
     @IsOptional()
-    coverPicture: string;
+    coverPicture?: string;
   
     @IsString()
     @IsOptional()
-    avatar: string;
+    avatar?: string;
   
     @IsString()
     @IsOptional()
-    status: string;
+    status?: string;
   
     @IsString()
     @IsOptional()
-    statusVerification: string;
+    statusVerification?: string;
   
     @IsString()
     @IsOptional()
-    accountId: string;
+    accountId?: string;
   
     @IsString()
     @IsOptional()
-    memberId: string;
+    memberId?: string;
+  
+    @IsNumber()
+    @IsOptional()
+    followers?: number;
+  
+    @IsNumber()
+    @IsOptional()
+    followingId?: number;
   
     @IsString()
     @IsOptional()
-    followers: number;
+    role?: string;
   
     @IsString()
     @IsOptional()
-    followingId: number;
+    urlWebsite?: string;
   
     @IsString()
     @IsOptional()
-    role: string;
+    urlFacebook?: string;
   
     @IsString()
     @IsOptional()
-    urlWebsite: string;
+    urlInstagram?: string;
   
     @IsString()
     @IsOptional()
-    urlFacebook: string;
-  
-    @IsString()
-    @IsOptional()
-    urlInstagram: string;
-  
-    @IsString()
-    @IsOptional()
-    urlTwitter: string;
-  }
-  
+    urlTwitter?: string;
+}
