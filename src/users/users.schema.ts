@@ -10,7 +10,8 @@ export class User extends Document {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: false, type: Object })
+  // Population
+  @Prop({ required: false, type: Types.ObjectId, ref: 'User' })
   invitedBy: object;
 
   @Prop({ required: true })
