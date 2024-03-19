@@ -11,6 +11,7 @@ import { UsersModule } from "./users/users.module";
 import { UsersService } from "./users/users.service";
 import { UsersController } from "./users/users.controller";
 import { CoreModule } from "@core/core.module";
+import UserMapper from "./users/users.mapper";
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import { CoreModule } from "@core/core.module";
     UsersModule,
   ],
   controllers: [AppController, UsersController, OrganizationsController],
-  providers: [AppService, UsersService, OrganizationsService],
+  providers: [AppService, UsersService, OrganizationsService, UserMapper],
 })
 export class AppModule {}

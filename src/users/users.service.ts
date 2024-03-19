@@ -4,19 +4,21 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User, UserDocument } from "./users.schema";
-import { UserEntity } from "./entities/user.entity"; // Import UserEntity
+import { UserEntity } from "./entities/user.entity"; 
+import { UserMapper } from "./users.mapper";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
+    private readonly userMapper: UserMapper,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     // Return UserEntity
     const createdUser = await this.userModel.create(createUserDto);
-    return createdUser.toObject(); // Convert document to plain object
+    return createdUser.toObject(); 
   }
 
   async findAll(
@@ -33,7 +35,7 @@ export class UsersService {
     const users = await query.exec();
     const total = await this.userModel.countDocuments(filters);
 
-    return { data: users.map((user) => user.toObject()), total }; // Convert documents to plain objects
+    return { data: users.map((user) => user.toObject()), total };
   }
 
   async findOne(id: string): Promise<UserEntity> {
@@ -49,7 +51,7 @@ export class UsersService {
       throw new NotFoundException(`User with id ${id} not found`);
     }
 
-    return user.toObject(); // Convert document to plain object
+    return this.userMapper.mapDocumentToEntity(user); // Convert document to plain object
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
