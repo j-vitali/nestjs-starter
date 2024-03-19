@@ -22,7 +22,7 @@ Aladia comes with a starter template for all <b>internal microservices</b>.
 
 ## Aladia Starter Template is based on `NestJs v10.3^`
 
-Visit [https://docs.nestjs.com/]https://docs.nestjs.com/ to view the full documentation.\
+Visit [https://docs.nestjs.com/](https://docs.nestjs.com) to view the full documentation.\
 
 
 
@@ -70,7 +70,7 @@ Starter template comes with the following libraries:
 
 ## 📦 Installation
 
-Project requires [Node.js]https://nodejs.org/ v16.8+ to run.
+Project requires [Node.js](https://nodejs.org) v16.8+ to run.
 
 1. Make sure you have git, node, and npm installed.
 2. Clone this repository locally.
@@ -99,12 +99,11 @@ $ npm run lint:fix
 ```
 
 
-
-
 ## 🚀 Deployment
 
 Deployment will be done by Aladia team.
 
 
 ## 🦾 Community
-Telegram
+1. Telegram
+2. [Discord](https://discord.gg/nestjs)
