@@ -10,6 +10,7 @@ import { OrganizationsService } from './organizations/organizations.service';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
 import { UsersController } from './users/users.controller';
+import { CoreModule } from '@core/core.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UsersController } from './users/users.controller';
         uri: process.env.MONGO_URI,
       }),
     }),
+    CoreModule,
     OrganizationsModule,
     UsersModule,
   ],
