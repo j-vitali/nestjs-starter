@@ -3,7 +3,6 @@ export class UserDto {
     invitedBy: null | object;
     name: string;
     surname: string;
-    fullname: string;
     nickname: string;
     bio: string;
     coverPicture: string;

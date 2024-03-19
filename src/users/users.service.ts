@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.schema';
-import { UserEntity } from './entities/user.entity';
+import { CreateUserEntity, UserEntity } from './entities/user.entity';
 import { UserDto } from './dto/user.dto';
 import { classToPlain, plainToClass, plainToInstance } from 'class-transformer';
 
@@ -18,9 +18,16 @@ export class UsersService {
     private readonly userModel: Model<UserEntity>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(
+    createUserEntity: CreateUserEntity,
+  ): Promise<UserEntity> {
+    // Add here custom logic
+    const createdUser =
+      await this.userModel.create(createUserEntity);
+
+    return createdUser;
   }
+
 
   // Get all 
   async findAll(

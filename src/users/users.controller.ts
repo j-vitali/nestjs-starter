@@ -2,41 +2,35 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Connection } from 'mongoose';
-import { InjectConnection } from '@nestjs/mongoose';
-import { PaginatedResponse } from '@core/interfaces';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UserDto } from './dto/user.dto';
+import { PaginatedResponse } from '@core/interfaces';
 import { UserEntity } from './entities/user.entity';
+import { LogMethod } from '@common/utils/logger';
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    @InjectConnection() 
-    private readonly connection: Connection,
     ) {}
 
-    @Get('check')
-    async checkDb() {
-      try {
-        // Access the MongoDB driver from the Mongoose connection
-        const db = this.connection.db;
-  
-        // Execute a raw query to fetch all documents from the Profiles collection
-        const profiles = await db.collection('Profiles').find({}).toArray();
-  
-        // Log the fetched documents to the console
-        return profiles;
-  
-      } catch (error) {
-        console.error('Error fetching profiles:', error);
-        return { error: 'Failed to fetch profiles. Check the server logs for details. ' + error };
-      }
-    }
+    
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @LogMethod()
+  async create(
+      @Body() createUserDto: CreateUserDto,
+    ): Promise<UserDto> {
+      const createdUser = await this.usersService.create({
+        ...createUserDto,
+        _id: new ObjectId,
+        invitedBy: undefined,
+        followersCommonTotal: 0,
+        followersCommon: [],
+        createdAt: undefined,
+        updatedAt: undefined
+      });
+      console.log('createdUser', createdUser);
+      return createdUser;
   }
 
 
