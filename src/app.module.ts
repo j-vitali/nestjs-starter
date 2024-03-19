@@ -4,12 +4,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { OrganizationsModule } from '@modules/organizations/organizations.module';
-import { OrganizationsController } from '@modules/organizations/organizations.controller';
-import { OrganizationsService } from '@modules/organizations/organizations.service';
-import { UsersModule } from './core/modules/users/users.module';
-import { UsersService } from '@modules/users/users.service';
-import { UsersController } from '@modules/users/users.controller';
+import { OrganizationsModule } from './organizations/organizations.module';
+import { OrganizationsController } from './organizations/organizations.controller';
+import { OrganizationsService } from './organizations/organizations.service';
+import { UsersModule } from './users/users.module';
+import { UsersService } from './users/users.service';
+import { UsersController } from './users/users.controller';
 
 @Module({
   imports: [

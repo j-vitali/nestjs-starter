@@ -19,14 +19,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@middlewares/*": ["./src/core/middlewares/*"],
-      "@casl/*": ["./src/core/casl/*"],
-      "@modules/*": ["./src/core/modules/*"],
+      
+      "@core/*": ["./src/core/*"],
+      "@common/*": ["./src/common/*"],
       "@config/*": ["./src/config/*"],
-      "@shared/*": ["./src/shared/*"],
-      "@utils/*": ["src/shared/utils/*"],
-      "@enum/*": ["src/shared/enum/*"],
-      "@data/*": [".src/core/data/*"],
+      "@middlewares/*": ["../src/core/middlewares/*"],
+      "@utils/*": ["./src/common/utils/*"],
+      "@enum/*": ["./src/common/enum/*"],
+      "@data/*": ["./src/data/*"],
     }
   }
 }

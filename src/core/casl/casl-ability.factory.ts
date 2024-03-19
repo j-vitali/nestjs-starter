@@ -7,13 +7,13 @@ import {
   InferSubjects,
   createMongoAbility,
 } from '@casl/ability';
-import { CreateOrganizationDto } from '@modules/organizations/dto/create-organization.dto';
-import { UpdateOrganizationDto } from '@modules/organizations/dto/update-organization.dto';
-import { OrganizationEntity } from '@modules/organizations/entities/organization.entity';
+import { CreateOrganizationDto } from 'src/organizations/dto/create-organization.dto';
+import { UpdateOrganizationDto } from 'src/organizations/dto/update-organization.dto';
+import { OrganizationEntity } from 'src/organizations/entities/organization.entity';
 import { Injectable } from '@nestjs/common';
-import { Action } from '@shared/enum/casl.enum';
-import { CourseRoles } from '@shared/enum/course-roles.enum';
-import { Roles } from '@shared/enum/roles.enum';
+import { Action } from '@common/enum/casl.enum';
+import { CourseRoles } from '@common/enum/course-roles.enum';
+import { Roles } from '@common/enum/roles.enum';
 
 type Subjects =
   | InferSubjects<
