@@ -22,7 +22,7 @@ Aladia comes with a starter template for all <b>internal microservices</b>.
 
 ## Aladia Starter Template is based on `NestJs v10.3^`
 
-Visit [https://docs.nestjs.com/](https://docs.nestjs.com) to view the full documentation.\
+Visit [https://docs.nestjs.com/](https://docs.nestjs.com) to view the full documentation.
 
 
 
@@ -74,13 +74,13 @@ Project requires [Node.js](https://nodejs.org) v16.8+ to run.
 
 1. Make sure you have git, node, and npm installed.
 2. Clone this repository locally.
-3. Install NestJs CLI `$ npm install -g @nestjs/cli`
+3. Install NestJs CLI ```$ npm install -g @nestjs/cli ```
 4. Run ``` $ gcloud auth login ``` and then choose ``` your Aladia google profile  ``` to retrieve user login info
 5. Run ``` $ npm run login ``` to interact with npm <b>private repositories</b>
 6. Run ``` $ npm install ``` to install all internal and external dependencies
 7. Run ``` $ npm run start:dev ``` to run live project
 8. Open ``` localhost:3000 ``` in your browser.
-9. Change ``` .env.sample ``` to ``` .env `
+9. Change ``` .env.sample ``` to ``` .env ```
 10. Done ✅
 
 

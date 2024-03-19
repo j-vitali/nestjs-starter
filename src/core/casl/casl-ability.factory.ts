@@ -1,4 +1,4 @@
-import { JWTDto } from '@aladia/auth-middlewares';
+import { JWTDto } from "@aladia/auth-middlewares";
 import {
   Ability,
   AbilityBuilder,
@@ -6,14 +6,14 @@ import {
   ExtractSubjectType,
   InferSubjects,
   createMongoAbility,
-} from '@casl/ability';
-import { CreateOrganizationDto } from 'src/organizations/dto/create-organization.dto';
-import { UpdateOrganizationDto } from 'src/organizations/dto/update-organization.dto';
-import { OrganizationEntity } from 'src/organizations/entities/organization.entity';
-import { Injectable } from '@nestjs/common';
-import { Action } from '@common/enum/casl.enum';
-import { CourseRoles } from '@common/enum/course-roles.enum';
-import { Roles } from '@common/enum/roles.enum';
+} from "@casl/ability";
+import { CreateOrganizationDto } from "src/organizations/dto/create-organization.dto";
+import { UpdateOrganizationDto } from "src/organizations/dto/update-organization.dto";
+import { OrganizationEntity } from "src/organizations/entities/organization.entity";
+import { Injectable } from "@nestjs/common";
+import { Action } from "@common/enum/casl.enum";
+import { CourseRoles } from "@common/enum/course-roles.enum";
+import { Roles } from "@common/enum/roles.enum";
 
 type Subjects =
   | InferSubjects<
@@ -21,8 +21,7 @@ type Subjects =
       | typeof UpdateOrganizationDto
       | typeof CreateOrganizationDto
     >
-  | 'all';
-
+  | "all";
 
 export type AppAbility = Ability<[Action, Subjects]>;
 
@@ -32,14 +31,14 @@ export type AppAbility = Ability<[Action, Subjects]>;
 @Injectable()
 export class CaslAbilityFactory {
   createForUser(user: JWTDto) {
-    console.log('user-jwt', user);
+    console.log("user-jwt", user);
 
     const { can, cannot, build } = new AbilityBuilder<
       Ability<[Action, Subjects]>
     >(createMongoAbility);
 
     if (rootRole(user, Roles.Admin)) {
-      can(Action.Manage, 'all'); // read-write access to every entity
+      can(Action.Manage, "all"); // read-write access to every entity
     }
 
     // can(Action.Read, GetOrganizationParams); // read-only access to every entity
@@ -51,7 +50,7 @@ export class CaslAbilityFactory {
     // cannot(Action.Delete, OrganizationEntity, { isPublished: true });
 
     // We can add more rules based on the coursesIds where we are Teachers present in the JWT:
-    const coursesWhenTeacher = entityRole(user, 'course', CourseRoles.Teacher);
+    const coursesWhenTeacher = entityRole(user, "course", CourseRoles.Teacher);
     // if (coursesWhenTeacher) {
     //   can(Action.Manage, OrganizationDto, {
     //     courseId: { $in: coursesWhenTeacher },

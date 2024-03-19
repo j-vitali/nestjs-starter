@@ -1,11 +1,17 @@
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { IndustryType } from './industry-type.schema';
+import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Types } from "mongoose";
 
 @Schema({
-  collection: 'Profiles',
+  collection: "Profiles",
   timestamps: true,
   id: true,
+  toJSON: {
+    virtuals: true,
+    transform: (doc, ret) => {
+      delete ret._id;
+      delete ret.__v;
+    },
+  },
 })
 export class User extends Document {
   @Prop({ required: true })
@@ -13,10 +19,10 @@ export class User extends Document {
 
   // Population
   @Prop({ required: false, type: Types.ObjectId, ref: User.name })
-  invitedBy: Types.ObjectId;  
-  
+  invitedBy: Types.ObjectId;
+
   // Population from another collection (IndustryTypes)
-  @Prop({ required: false, type: Types.ObjectId, ref: 'IndustryType' })
+  @Prop({ required: false, type: Types.ObjectId, ref: "IndustryType" })
   industryType: Types.ObjectId;
 
   @Prop({ required: true })
@@ -34,7 +40,7 @@ export class User extends Document {
   @Prop({ required: true })
   status: string;
 
-  @Prop({ required: false, default: 'pending'})
+  @Prop({ required: false, default: "pending" })
   statusVerification: string;
 
   @Prop({ required: false, type: Number })

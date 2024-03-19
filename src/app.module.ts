@@ -1,22 +1,22 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { MongooseModule } from "@nestjs/mongoose";
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { OrganizationsModule } from './organizations/organizations.module';
-import { OrganizationsController } from './organizations/organizations.controller';
-import { OrganizationsService } from './organizations/organizations.service';
-import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
-import { UsersController } from './users/users.controller';
-import { CoreModule } from '@core/core.module';
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { OrganizationsModule } from "./organizations/organizations.module";
+import { OrganizationsController } from "./organizations/organizations.controller";
+import { OrganizationsService } from "./organizations/organizations.service";
+import { UsersModule } from "./users/users.module";
+import { UsersService } from "./users/users.service";
+import { UsersController } from "./users/users.controller";
+import { CoreModule } from "@core/core.module";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: ".env",
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -29,11 +29,7 @@ import { CoreModule } from '@core/core.module';
     OrganizationsModule,
     UsersModule,
   ],
-  controllers: [
-    AppController, 
-    UsersController, 
-    OrganizationsController
-  ],
-  providers: [AppService, UsersService, OrganizationsService]
+  controllers: [AppController, UsersController, OrganizationsController],
+  providers: [AppService, UsersService, OrganizationsService],
 })
 export class AppModule {}

@@ -1,15 +1,14 @@
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Types } from "mongoose";
 
 @Schema({
-  collection: 'IndustryTypes',
+  collection: "IndustryTypes",
   timestamps: true,
   id: true,
 })
 export class IndustryType extends Document {
   @Prop({ required: true })
   value: string;
-
 }
 
 export type IndustryTypeDocument = IndustryType & Document;
