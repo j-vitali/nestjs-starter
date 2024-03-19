@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.schema';
-import { UserEntity } from '@aladia/auth-middlewares';
+import { UserEntity } from './entities/user.entity';
 import { UserDto } from './dto/user.dto';
 import { classToPlain, plainToClass, plainToInstance } from 'class-transformer';
 
@@ -26,8 +26,11 @@ export class UsersService {
   async findAll(
     filters: any = {}, 
     pagination?: { skip: number; limit: number }):
-     Promise<{ data: UserDto[]; total: number }> {
+    Promise<{ data: UserEntity[]; total: number }> {
     const { skip, limit } = pagination || {};
+    
+    console.log('filters-service', filters);
+
     const query = this.userModel.find(filters);
 
     if (pagination) {
@@ -45,9 +48,9 @@ export class UsersService {
         // } else {
         //   mapperFunction = FullUserDtoMapper;
         // }
-    const usersDto: UserDto[] = plainToClass(UserDto, users, { enableCircularCheck: true });
+    //const usersDto: UserDto[] = plainToClass(UserDto, users, { enableCircularCheck: true });
 
-    return { data: usersDto, total };
+    return { data: users, total };
   }
 
   async findOne(id: string): Promise<UserEntity> {

@@ -7,6 +7,7 @@ import { InjectConnection } from '@nestjs/mongoose';
 import { PaginatedResponse } from '@core/interfaces';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UserDto } from './dto/user.dto';
+import { UserEntity } from './entities/user.entity';
 
 @Controller('users')
 export class UsersController {
@@ -40,7 +41,8 @@ export class UsersController {
 
 
   @Get()
-  async findAll(@Query() query: FilterUserDto): Promise<PaginatedResponse<UserDto>> {
+  async findAll(@Query() query: FilterUserDto): 
+  Promise<PaginatedResponse<UserEntity>> {
     const { limit = 20, page = 1, ...filters } = query;
 
     // Call service method with filters and pagination options
