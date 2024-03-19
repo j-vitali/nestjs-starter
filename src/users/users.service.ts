@@ -24,6 +24,7 @@ export class UsersService {
   async create(
     createUserDto: CreateUserDto,
   ) {
+    console.log('createUserDto', createUserDto);
     // Add here custom logic
     const createdUser = await this.userModel.create(createUserDto);
 

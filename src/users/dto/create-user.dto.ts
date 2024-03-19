@@ -12,7 +12,11 @@ export class CreateUserDto {
   
     @IsString()
     @IsNotEmpty()
-    nickname: string;
+    nickname: string;    
+    
+    @IsString()
+    @IsNotEmpty()
+    invitedBy: string;
   
     @IsString()
     @IsOptional()

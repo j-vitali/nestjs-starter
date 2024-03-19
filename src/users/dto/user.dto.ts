@@ -1,6 +1,6 @@
 export class UserDto {
     id: string;
-    invitedBy: null | object;
+    invitedBy: string;
     name: string;
     surname: string;
     nickname: string;
@@ -15,11 +15,9 @@ export class UserDto {
     followingId: number;
     followersCommonTotal: number;
     followersCommon: any[];
-    role: string;
+    role: string | null;
     urlWebsite: string;
     urlFacebook: string;
     urlInstagram: string;
     urlTwitter: string;
-    createdAt: Date;
-    updatedAt: Date;
   }

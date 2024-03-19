@@ -10,7 +10,7 @@ export class User extends Document {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, type: Object })
+  @Prop({ required: false, type: Object })
   invitedBy: object;
 
   @Prop({ required: true })
@@ -28,7 +28,7 @@ export class User extends Document {
   @Prop({ required: true })
   status: string;
 
-  @Prop({ required: true })
+  @Prop({ required: false, default: 'pending'})
   statusVerification: string;
 
   @Prop({ required: false, type: Number })
@@ -54,12 +54,6 @@ export class User extends Document {
 
   @Prop({ required: false })
   accountId: string;
-
-  @Prop({ required: false, type: Date })
-  createdAt: Date;
-
-  @Prop({ required: false, type: Date })
-  updatedAt: Date;
 
   @Prop({ required: false })
   urlWebsite: string;
