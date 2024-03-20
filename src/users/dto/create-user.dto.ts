@@ -10,7 +10,6 @@ import {
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  @MinLength(5)
   name: string;
 
   @IsString()
@@ -22,7 +21,7 @@ export class CreateUserDto {
   nickname: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   invitedBy: string;
 
   @IsString()

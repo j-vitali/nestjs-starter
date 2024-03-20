@@ -1,4 +1,4 @@
-import { JWTDto } from "@aladia/auth-middlewares";
+import { JWTDto, UserEntity } from "@aladia/auth-middlewares";
 import {
   Ability,
   AbilityBuilder,
@@ -7,19 +7,18 @@ import {
   InferSubjects,
   createMongoAbility,
 } from "@casl/ability";
-import { CreateOrganizationDto } from "src/organizations/dto/create-organization.dto";
-import { UpdateOrganizationDto } from "src/organizations/dto/update-organization.dto";
-import { OrganizationEntity } from "src/organizations/entities/organization.entity";
 import { Injectable } from "@nestjs/common";
 import { Action } from "@common/enum/casl.enum";
 import { CourseRoles } from "@common/enum/course-roles.enum";
 import { Roles } from "@common/enum/roles.enum";
+import { UpdateUserDto } from "src/users/dto/update-user.dto";
+import { CreateUserDto } from "src/users/dto/create-user.dto";
 
 type Subjects =
   | InferSubjects<
-      | typeof OrganizationEntity
-      | typeof UpdateOrganizationDto
-      | typeof CreateOrganizationDto
+      | typeof UserEntity
+      | typeof UpdateUserDto
+      | typeof CreateUserDto
     >
   | "all";
 
