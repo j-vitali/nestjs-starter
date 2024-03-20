@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 
 export class UserEntity {
   _id: string;
-  invitedBy?: object | null;
+  invitedBy: { nickname: string | null, name: string | null };
   industryType?: object | null;
   name?: string;
   surname?: string;
@@ -26,17 +26,6 @@ export class UserEntity {
   urlTwitter?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
-
-
-  // Method to populate the invitedBy field
-  populateInvitedBy(invitedByData: any): void {
-    this.invitedBy = invitedByData; // Populate the invitedBy field
-  }
-
-  // Method to populate the industryType field
-  populateIndustryType(industryTypeData: any): void {
-    // Implement population logic for industryType
-  }
 }
 
 export type CreateUserEntity = UserEntity;

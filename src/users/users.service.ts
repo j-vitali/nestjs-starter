@@ -2,10 +2,11 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Query } from "mongoose";
 import { User, UserDocument } from "./users.schema";
 import { UserEntity } from "./entities/user.entity"; 
 import { UserRTO } from "./entities/user-rto";
+import { FilterUserDto } from "./dto/filter-user.dto";
 
 @Injectable()
 export class UsersService {
@@ -22,23 +23,38 @@ export class UsersService {
   }
 
   async findAll(
-    filters: any = {},
+    filters: FilterUserDto = {},
     pagination?: { skip: number; limit: number },
-  ): Promise<{ data: UserEntity[]; total: number }> {
+  ): Promise<{ data: UserRTO[]; total: number }> {
     const { skip, limit } = pagination || {};
-    const query = this.userModel.find(filters);
-
-    if (pagination) {
-      query.skip(skip).limit(limit);
+  
+    let query: Query<UserDocument[], UserDocument> = this.userModel.find({});
+  
+    // Apply filters from FilterUserDto
+    if (filters.name) {
+      query = query.where('name').equals(filters.name);
     }
-
+    // Add more filters as needed
+  
+    if (pagination) {
+      query = query.skip(skip).limit(limit);
+    }
+  
+    // Populate the fields
+    query = query.populate([
+      { path: "invitedBy", select: "name surname nickname avatar role" },
+      { path: "industryType", select: "value" },
+    ]);
+  
     const users = await query.exec();
     const total = await this.userModel.countDocuments(filters);
-
-
-    return { data: [], total };
+  
+    // Convert each user document to a UserRTO object with populated fields included
+    const userRTOs = users.map(user => new UserRTO(user.toObject()));
+  
+    return { data: userRTOs, total };
   }
-
+  
   
   async findOne(id: string): Promise<UserRTO> {
     const user = await this.userModel
@@ -59,14 +75,14 @@ export class UsersService {
     return userRTO;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<UserRTO> {
     const updatedUser = await this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .exec();
     if (!updatedUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    return updatedUser.toObject();
+    return UserRTO.fromEntity(updatedUser.toObject()); 
   }
 
   async remove(id: string): Promise<UserEntity> {
