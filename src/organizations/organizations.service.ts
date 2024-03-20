@@ -3,7 +3,7 @@ import { CreateOrganizationDto } from "./dto/create-organization.dto";
 import { UpdateOrganizationDto } from "./dto/update-organization.dto";
 import { Organization, OrganizationDocument } from "./organization.schema";
 import { Model, Query } from "mongoose";
-import { OrganizationRTO } from "./entities/organization-rto";
+import { OrganizationRTO } from "./rto/organization-rto";
 import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
@@ -36,7 +36,9 @@ export class OrganizationsService {
     query = query.skip(skip).limit(limit);
 
     // Execute query
-    const organizations = await query.exec();
+    const organizations = await query
+    .populate('industryType')
+    .exec();
 
     // Get total count for pagination
     const total = await this.organizationModel.countDocuments(filters);

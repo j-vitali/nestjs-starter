@@ -1,4 +1,4 @@
-import { OrganizationEntity } from "./organization.entity";
+import { OrganizationEntity } from "../entities/organization.entity";
 
 // organization-rto.ts
 export class OrganizationRTO {
@@ -6,7 +6,7 @@ export class OrganizationRTO {
   name: string;
   description: string;
   websiteUrl: string;
-  industryType: string;
+  industryType: any | null;
   state: string;
   status: string;
   address: string;
@@ -25,6 +25,7 @@ export class OrganizationRTO {
   constructor(organizationEntity: OrganizationEntity) {
     this.id = organizationEntity._id;
     this.name = organizationEntity.name;
+    this.industryType = organizationEntity.industryType;
     this.demoField = {
         name: 'demo name',
         value: 'demo value'

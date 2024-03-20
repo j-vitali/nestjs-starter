@@ -6,6 +6,7 @@ import { Document, Types } from "mongoose";
   timestamps: true,
   id: true,
 })
+
 export class IndustryType extends Document {
   @Prop({ required: true })
   value: string;

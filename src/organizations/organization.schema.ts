@@ -16,7 +16,7 @@ export class Organization extends Document {
   @Prop({ required: false })
   websiteUrl: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: Types.ObjectId, ref: "IndustryType" })
   industryType: string;
 
   @Prop({ required: false })

@@ -4,7 +4,7 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { FilterUserDto } from "./dto/query-user.dto";
 import { LogMethod } from "@core/decorators/logger";
-import { UserRTO } from "./entities/user-rto";
+import { UserRTO } from "./rto/user-rto";
 
 @Controller("users")
 export class UsersController {
