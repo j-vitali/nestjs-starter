@@ -3,6 +3,7 @@ import { UserEntity } from "./user.entity";
 // user-rto.ts
 export class UserRTO {
   id: string;
+  demoField: object | null;
   name: string;
   surname: string;
   fullname: string;
@@ -44,7 +45,12 @@ export class UserRTO {
     this.urlFacebook = userEntity.urlFacebook;
     this.urlInstagram = userEntity.urlInstagram;
     this.urlTwitter = userEntity.urlTwitter;
-    this.invitedBy = this.invitedBy;
+    this.invitedBy = userEntity.invitedBy;
+    this.industryType = userEntity.industryType;
+    this.demoField = {
+        name: 'demo name',
+        value: 'demo value'
+    };
     this.createdAt = userEntity.createdAt;
     this.updatedAt = userEntity.updatedAt;
   }

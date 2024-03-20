@@ -2,7 +2,8 @@ import { Types } from 'mongoose';
 
 export class UserEntity {
   _id: string;
-  invitedBy: { nickname: string | null, name: string | null };
+  demoField: object | null;
+  invitedBy: object | null;
   industryType?: object | null;
   name?: string;
   surname?: string;
@@ -26,6 +27,7 @@ export class UserEntity {
   urlTwitter?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
+
 }
 
 export type CreateUserEntity = UserEntity;
