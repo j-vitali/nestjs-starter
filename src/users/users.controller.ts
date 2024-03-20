@@ -1,20 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-  ParseIntPipe,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { FilterUserDto } from "./dto/query-user.dto";
-import { PaginatedResponse } from "@core/interfaces";
-import { UserEntity } from "./entities/user.entity";
 import { LogMethod } from "@core/decorators/logger";
 import { UserRTO } from "./entities/user-rto";
 
