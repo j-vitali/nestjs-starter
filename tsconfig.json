@@ -19,14 +19,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      
       "@core/*": ["./src/core/*"],
       "@common/*": ["./src/common/*"],
       "@config/*": ["./src/config/*"],
-      "@middlewares/*": ["../src/core/middlewares/*"],
+      "@decorators/*": ["./src/core/decorators/*"],
+      "@middlewares/*": ["./src/core/middlewares/*"],
       "@utils/*": ["./src/common/utils/*"],
       "@enum/*": ["./src/common/enum/*"],
-      "@data/*": ["./src/data/*"],
+      "@data/*": ["./data/*"],
     }
   }
 }

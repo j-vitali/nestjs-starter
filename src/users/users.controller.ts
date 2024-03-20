@@ -12,10 +12,9 @@ import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { FilterUserDto } from "./dto/filter-user.dto";
-import { UserDto } from "./dto/user.dto";
 import { PaginatedResponse } from "@core/interfaces";
 import { UserEntity } from "./entities/user.entity";
-import { LogMethod } from "@common/utils/logger";
+import { LogMethod } from "@core/decorators/logger";
 
 @Controller("users")
 export class UsersController {
