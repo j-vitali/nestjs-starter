@@ -7,6 +7,7 @@ import { User, UserDocument } from "./users.schema";
 import { UserEntity } from "./entities/user.entity";
 import { UserRTO } from "./rto/user-rto";
 import { FilterUserDto } from "./dto/query-user.dto";
+import { MongoQueryModel } from "nest-mongo-query-parser";
 
 @Injectable()
 export class UsersService {
@@ -20,36 +21,26 @@ export class UsersService {
     return UserRTO.fromEntity(createdUser.toObject());
   }
 
-  async findAll(
-    filters: FilterUserDto = {},
-    pagination?: { skip: number; limit: number },
-  ): Promise<{ data: UserRTO[]; total: number }> {
-    const { skip = 0, limit = 10 } = pagination || {};
+  async findAll(query: MongoQueryModel): Promise<{ data: UserRTO[]; resultCount: number; totalCount: number }> {
+    // Find organizations based on query parameters
+    const dbQuery = this.userModel
+      .find(query.filter)
+      .limit(query.limit)
+      .skip(query.skip)
+      .sort(query.sort)
+      .select(query.select);
 
-    let query: Query<UserDocument[], UserDocument> = this.userModel.find({});
-
-    // Apply filters from FilterUserDto
-    if (filters.name) {
-      query = query.where('name').equals(filters.name);
-    }
-    // Add more filters as needed
-
-    // Populate the fields
-    query = query.populate([
-      { path: "invitedBy", select: "name surname nickname avatar role" },
-      { path: "industryType", select: "value" },
+    const [organizations, totalCount] = await Promise.all([
+      dbQuery.exec(),
+      this.userModel.countDocuments(query.filter),
     ]);
 
-    const [users, total] = await Promise.all([
-      query.skip(skip).limit(limit).exec(),
-      this.userModel.countDocuments(filters),
-    ]);
+    // Convert organizations to RTO
+    const dataRTOs = organizations.map(item => new UserRTO(item.toObject()));
 
-    // Convert each user document to a UserRTO object with populated fields included
-    const userRTOs = users.map(user => new UserRTO(user.toObject()));
-
-    return { data: userRTOs, total };
+    return { data: dataRTOs, resultCount: organizations.length, totalCount };
   }
+
 
   async findOne(id: string): Promise<UserRTO> {
     const user = await this.userModel

@@ -16,16 +16,17 @@ export class OrganizationsController {
   }
 
   @Get()
-  async findAll(@MongoQuery() query: MongoQueryModel): Promise<{ data: OrganizationRTO[]; pagination: { currentPage: number; totalPages: number; resultCount: number; totalCount: number } }> {
+  async findAll(
+    @MongoQuery() query: MongoQueryModel,
+  ): Promise<{
+    data: OrganizationRTO[];
+    pagination: { currentPage: number; totalPages: number; resultCount: number; totalCount: number };
+  }> {
     const { data, resultCount, totalCount: totalCount } = await this.organizationsService.findAll(query);
 
     // Calculate pagination values
     const currentPage = Math.floor(query.skip / query.limit) + 1;
     const totalPages = Math.ceil(totalCount / query.limit ?? 100);
-    console.log("totalCount", totalCount);
-    console.log("query", query);
-    console.log("resultCount", resultCount);
-    console.log("totalPages", totalPages);
     // Return data array and pagination schema
     return {
       data: data,

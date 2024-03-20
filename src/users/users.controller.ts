@@ -5,6 +5,7 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { FilterUserDto } from "./dto/query-user.dto";
 import { LogMethod } from "@core/decorators/logger";
 import { UserRTO } from "./rto/user-rto";
+import { MongoQuery, MongoQueryModel } from "nest-mongo-query-parser";
 
 @Controller("users")
 export class UsersController {
@@ -17,23 +18,25 @@ export class UsersController {
   }
 
   @Get()
-  async findAll(@Query() query: FilterUserDto) {
-    const { limit = 20, page = 1, ...filters } = query;
+  async findAll(
+    @MongoQuery() query: MongoQueryModel,
+  ): Promise<{
+    data: UserRTO[];
+    pagination: { currentPage: number; totalPages: number; resultCount: number; totalCount: number };
+  }> {
+    const { data, resultCount, totalCount: totalCount } = await this.usersService.findAll(query);
 
-    // Call service method with filters and pagination options
-    const data = await this.usersService.findAll(filters, {
-      skip: (page - 1) * limit,
-      limit,
-    });
-    // Calculate total pages
-    const totalPages = Math.ceil(data.total / limit);
-
+    // Calculate pagination values
+    const currentPage = Math.floor(query.skip / query.limit) + 1;
+    const totalPages = Math.ceil(totalCount / query.limit ?? 100);
+    // Return data array and pagination schema
     return {
-      data: data.data,
+      data: data,
       pagination: {
-        currentPage: page,
+        currentPage: 1 || currentPage,
         totalPages: totalPages,
-        totalRecords: data.total,
+        totalCount,
+        resultCount,
       },
     };
   }

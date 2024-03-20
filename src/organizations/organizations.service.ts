@@ -16,15 +16,16 @@ export class OrganizationsService {
 
   async findAll(query: MongoQueryModel): Promise<{ data: OrganizationRTO[]; resultCount: number; totalCount: number }> {
     // Find organizations based on query parameters
-    const organizationsQuery = this.organizationModel
+    const dbQuery = this.organizationModel
       .find(query.filter)
       .limit(query.limit)
       .skip(query.skip)
       .sort(query.sort)
       .select(query.select);
 
+    console.log('query', query);
     const [organizations, totalCount] = await Promise.all([
-      organizationsQuery.exec(),
+      dbQuery.exec(),
       this.organizationModel.countDocuments(query.filter),
     ]);
 
