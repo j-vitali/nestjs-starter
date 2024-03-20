@@ -5,20 +5,20 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User, UserDocument } from "./users.schema";
 import { UserEntity } from "./entities/user.entity"; 
-import { UserMapper } from "./users.mapper";
+import { UserRTO } from "./entities/user-rto";
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
-    private readonly userMapper: UserMapper,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(createUserDto: CreateUserDto): Promise<UserRTO> {
     // Return UserEntity
     const createdUser = await this.userModel.create(createUserDto);
-    return createdUser.toObject(); 
+    console.log("create-service", createUserDto);
+    return UserRTO.fromEntity(createdUser.toObject()); 
   }
 
   async findAll(
@@ -35,14 +35,12 @@ export class UsersService {
     const users = await query.exec();
     const total = await this.userModel.countDocuments(filters);
 
-    // Map the array of users to an array of UserEntity using the UserMapper
-    const mappedUsers = users.map(user => this.userMapper.mapDocumentToEntity(user));
 
-    return { data: mappedUsers, total };
+    return { data: [], total };
   }
 
   
-  async findOne(id: string): Promise<UserEntity> {
+  async findOne(id: string): Promise<UserRTO> {
     const user = await this.userModel
       .findById(id)
       .populate([
@@ -55,7 +53,10 @@ export class UsersService {
       throw new NotFoundException(`User with id ${id} not found`);
     }
 
-    return this.userMapper.mapDocumentToEntity(user); // Convert document to plain object
+    // Populate the UserRTO with the populated fields
+    const userRTO = new UserRTO(user.toObject());
+
+    return userRTO;
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<UserEntity> {
@@ -65,7 +66,7 @@ export class UsersService {
     if (!updatedUser) {
       throw new NotFoundException(`User with id ${id} not found`);
     }
-    return updatedUser.toObject(); // Convert document to plain object
+    return updatedUser.toObject();
   }
 
   async remove(id: string): Promise<UserEntity> {

@@ -4,7 +4,7 @@ import { UsersController } from "./users.controller";
 import { MongooseModule } from "@nestjs/mongoose";
 import { User, UserSchema } from "./users.schema";
 import { IndustryType, IndustryTypeSchema } from "./industry-type.schema";
-import { UserMapper } from "./users.mapper";
+
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { UserMapper } from "./users.mapper";
     ]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserMapper],
+  providers: [UsersService],
   exports: [UsersService, MongooseModule],
 })
 export class UsersModule {}

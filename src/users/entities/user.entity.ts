@@ -1,32 +1,31 @@
 import { Types } from 'mongoose';
 
 export class UserEntity {
-  _id!: Types.ObjectId;
-  id!: string;
+  _id: string;
   invitedBy?: object | null;
   industryType?: object | null;
-  name!: string;
-  surname!: string;
+  name?: string;
+  surname?: string;
   fullname: string;
-  nickname!: string;
-  status!: string;
+  nickname?: string;
+  status?: string;
   statusVerification?: string | null;
   avatar?: string | null;
   coverPicture?: string | null;
   bio?: string | null;
   accountId?: string | null;
   memberId?: string | null;
-  followers!: number;
-  followingId!: number;
-  followersCommonTotal!: number;
-  followersCommon!: any[];
+  followers?: number;
+  followingId?: number;
+  followersCommonTotal?: number;
+  followersCommon?: any[];
   role?: string | null;
   urlWebsite?: string | null;
   urlFacebook?: string | null;
   urlInstagram?: string | null;
   urlTwitter?: string | null;
-  createdAt!: Date;
-  updatedAt!: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 
 
   // Method to populate the invitedBy field
@@ -40,6 +39,6 @@ export class UserEntity {
   }
 }
 
-export type CreateUserEntity = Omit<UserEntity, 'id'>;
-export type UpdateUserEntity = Partial<Omit<UserEntity, 'id'>>;
-export type UserEntityFilters = Partial<UserEntity>;
+export type CreateUserEntity = UserEntity;
+export type UpdateUserEntity = UserEntity;
+export type UserEntityFilters = UserEntity;

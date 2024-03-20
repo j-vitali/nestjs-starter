@@ -4,14 +4,7 @@ import { Document, Types } from "mongoose";
 @Schema({
   collection: "Profiles",
   timestamps: true,
-  id: true,
-  toJSON: {
-    virtuals: true,
-    transform: (doc, ret) => {
-      delete ret._id;
-      delete ret.__v;
-    },
-  },
+  id: true
 })
 export class User extends Document {
   @Prop({ required: true })

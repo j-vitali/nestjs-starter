@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -15,15 +16,15 @@ import { FilterUserDto } from "./dto/filter-user.dto";
 import { PaginatedResponse } from "@core/interfaces";
 import { UserEntity } from "./entities/user.entity";
 import { LogMethod } from "@core/decorators/logger";
+import { UserRTO } from "./entities/user-rto";
 
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserRTO> {
     const createdUser = await this.usersService.create(createUserDto);
-    console.log("createdUser", createUserDto);
     return createdUser;
   }
 
@@ -50,7 +51,7 @@ export class UsersController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string): Promise<UserEntity> {
+  findOne(@Param("id") id: string): Promise<UserRTO> {
     return this.usersService.findOne(id);
   }
 

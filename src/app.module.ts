@@ -6,7 +6,7 @@ import { UsersModule } from "./users/users.module";
 import { UsersService } from "./users/users.service";
 import { UsersController } from "./users/users.controller";
 import { CoreModule } from "@core/core.module";
-import UserMapper from "./users/users.mapper";
+
 
 @Module({
   imports: [
@@ -25,6 +25,6 @@ import UserMapper from "./users/users.mapper";
     UsersModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserMapper],
+  providers: [UsersService],
 })
 export class AppModule {}
