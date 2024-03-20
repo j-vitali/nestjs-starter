@@ -6,7 +6,7 @@ import { Model, Query } from "mongoose";
 import { User, UserDocument } from "./users.schema";
 import { UserEntity } from "./entities/user.entity"; 
 import { UserRTO } from "./entities/user-rto";
-import { FilterUserDto } from "./dto/filter-user.dto";
+import { FilterUserDto } from "./dto/query-user.dto";
 
 @Injectable()
 export class UsersService {

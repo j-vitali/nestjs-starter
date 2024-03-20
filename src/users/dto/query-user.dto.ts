@@ -1,7 +1,7 @@
 import { PaginatedRequest } from "@core/interfaces/response.interface";
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString, IsIn } from "class-validator";
 
-export class FilterUserDto extends PaginatedRequest {
+export class FilterUserDto {
   @IsString()
   @IsOptional()
   name?: string;
@@ -13,4 +13,12 @@ export class FilterUserDto extends PaginatedRequest {
   @IsString()
   @IsOptional()
   nickname?: string;
+
+}
+
+export class SortUserDto {
+  @IsOptional()
+  @IsString()
+  @IsIn(["createdAt", "-createdAt"])
+  sort?: string;
 }
