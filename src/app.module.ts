@@ -21,7 +21,7 @@ import { CoreModule } from "@core/core.module";
         uri: process.env.MONGO_URI,
       }),
     }),
-    CoreModule,
+    //CoreModule,
     UsersModule,
   ],
   controllers: [UsersController],

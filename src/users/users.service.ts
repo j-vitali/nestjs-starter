@@ -12,7 +12,7 @@ import { FilterUserDto } from "./dto/filter-user.dto";
 export class UsersService {
   constructor(
     @InjectModel(User.name)
-    private readonly userModel: Model<UserDocument>,
+    private readonly userModel: Model<User>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserRTO> {

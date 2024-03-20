@@ -28,13 +28,12 @@ Visit [https://docs.nestjs.com/](https://docs.nestjs.com) to view the full docum
 Folder & Files structure
 
 ```.
-├── docs                      Docs
+├── data                      Dummy JSON data for avoiding database stored data
 ├── src
 │   ├── config                Config folder containing all config files
 │   ├── common                Common code and interfaces
 │   │   ├── enums             Common ENUMS
 │   │   └── utils             Common Ultils functions, like date transformer...
-│   ├── data                  Dummy JSON data for avoiding database stored data
 │   ├── users                 Example Module (All modules must be root path based)
 │   └── ...                   Other Module here...
 │   └── ...                   Other Module here...
