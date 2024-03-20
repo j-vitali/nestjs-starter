@@ -40,6 +40,7 @@
     "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "mongoose": "^8.2.2",
+    "nest-mongo-query-parser": "^1.0.13",
     "reflect-metadata": "^0.2.1",
     "rxjs": "^7.8.1"
   },

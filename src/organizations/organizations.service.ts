@@ -1,67 +1,56 @@
-import { Injectable } from "@nestjs/common";
-import { CreateOrganizationDto } from "./dto/create-organization.dto";
-import { UpdateOrganizationDto } from "./dto/update-organization.dto";
-import { Organization, OrganizationDocument } from "./organization.schema";
-import { Model, Query } from "mongoose";
-import { OrganizationRTO } from "./rto/organization-rto";
-import { InjectModel } from "@nestjs/mongoose";
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Organization, OrganizationDocument } from './organization.schema';
+import { CreateOrganizationDto } from './dto/create-organization.dto';
+import { UpdateOrganizationDto } from './dto/update-organization.dto';
+import { MongoQueryModel, MongoQueryParser } from 'nest-mongo-query-parser';
 
 @Injectable()
 export class OrganizationsService {
   constructor(
     @InjectModel(Organization.name)
-    private organizationModel: Model<Organization>,
+    private organizationModel: Model<OrganizationDocument>,
   ) {}
 
-  async findAll(
-    filters: any = {},
-    sort: any = {},
-    pagination: { skip: number; limit: number } = { skip: 0, limit: 10 },
-  ): Promise<{ data: OrganizationRTO[]; total: number }> {
-    const { skip, limit } = pagination;
+  async findAll(query: MongoQueryModel) {
+    const queryModel = this.organizationModel
+      .find(query.filter)
+      .limit(query.limit)
+      .skip(query.skip)
+      .sort(query.sort)
+      .select(query.select);
 
-    let query: Query<OrganizationDocument[], OrganizationDocument> = this.organizationModel.find();
+    const data = await queryModel.exec();
 
-    // Apply filters
-    if (filters) {
-      query = query.where(filters);
-    }
+    // Calculate pagination values
+    const currentPage = Math.floor(query.skip / query.limit) + 1;
+    const totalPages = Math.ceil(await this.organizationModel.countDocuments(query.filter) / query.limit);
 
-    // Apply sorting
-    if (sort) {
-      query = query.sort(sort);
-    }
-
-    // Apply pagination
-    query = query.skip(skip).limit(limit);
-
-    // Execute query
-    const organizations = await query
-    .populate('industryType')
-    .exec();
-
-    // Get total count for pagination
-    const total = await this.organizationModel.countDocuments(filters);
-
-    // Convert documents to DTOs
-    const organizationRTOs = organizations.map((org) => new OrganizationRTO(org.toObject()));
-
-    return { data: organizationRTOs, total };
+    // Return data array and pagination schema
+    return {
+      data: data,
+      pagination: {
+        currentPage: currentPage,
+        totalPages: totalPages,
+        totalRecords: data.length,
+      },
+    };
   }
 
   create(createOrganizationDto: CreateOrganizationDto) {
-    return "This action adds a new organization";
+    // Implement create method logic
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} organization`;
+    // Implement findOne method logic
   }
 
   update(id: number, updateOrganizationDto: UpdateOrganizationDto) {
-    return `This action updates a #${id} organization`;
+    // Implement update method logic
   }
 
   remove(id: number) {
-    return `This action removes a #${id} organization`;
+    // Implement remove method logic
   }
 }

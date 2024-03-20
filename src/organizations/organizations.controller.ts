@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/commo
 import { OrganizationsService } from "./organizations.service";
 import { CreateOrganizationDto } from "./dto/create-organization.dto";
 import { UpdateOrganizationDto } from "./dto/update-organization.dto";
+import { MongoQuery, MongoQueryModel } from "nest-mongo-query-parser";
 
 @Controller("organizations")
 export class OrganizationsController {
@@ -13,8 +14,8 @@ export class OrganizationsController {
   }
 
   @Get()
-  findAll() {
-    const organizations = this.organizationsService.findAll();
+  findAll(@MongoQuery() query: MongoQueryModel) {
+    const organizations = this.organizationsService.findAll(query);
     return organizations;
   }
 
