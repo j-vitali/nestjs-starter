@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOrganizationDto } from './dto/create-organization.dto';
-import { UpdateOrganizationDto } from './dto/update-organization.dto';
-import { Organization, OrganizationDocument } from './organization.schema';
+import { Injectable } from "@nestjs/common";
+import { CreateOrganizationDto } from "./dto/create-organization.dto";
+import { UpdateOrganizationDto } from "./dto/update-organization.dto";
+import { Organization, OrganizationDocument } from "./organization.schema";
 import { Model, Query } from "mongoose";
-import { OrganizationRTO } from './entities/organization-rto';
-import { InjectModel } from '@nestjs/mongoose';
+import { OrganizationRTO } from "./entities/organization-rto";
+import { InjectModel } from "@nestjs/mongoose";
 
 @Injectable()
 export class OrganizationsService {
@@ -13,13 +13,42 @@ export class OrganizationsService {
     private organizationModel: Model<Organization>,
   ) {}
 
-  create(createOrganizationDto: CreateOrganizationDto) {
-    return 'This action adds a new organization';
+  async findAll(
+    filters: any = {},
+    sort: any = {},
+    pagination: { skip: number; limit: number } = { skip: 0, limit: 10 },
+  ): Promise<{ data: OrganizationRTO[]; total: number }> {
+    const { skip, limit } = pagination;
+
+    let query: Query<OrganizationDocument[], OrganizationDocument> = this.organizationModel.find();
+
+    // Apply filters
+    if (filters) {
+      query = query.where(filters);
+    }
+
+    // Apply sorting
+    if (sort) {
+      query = query.sort(sort);
+    }
+
+    // Apply pagination
+    query = query.skip(skip).limit(limit);
+
+    // Execute query
+    const organizations = await query.exec();
+
+    // Get total count for pagination
+    const total = await this.organizationModel.countDocuments(filters);
+
+    // Convert documents to DTOs
+    const organizationRTOs = organizations.map((org) => new OrganizationRTO(org.toObject()));
+
+    return { data: organizationRTOs, total };
   }
 
-  async findAll(): Promise<OrganizationRTO[]> {
-    const organizations = await this.organizationModel.find().exec()
-    return organizations.map(org => new OrganizationRTO(org.toObject()));
+  create(createOrganizationDto: CreateOrganizationDto) {
+    return "This action adds a new organization";
   }
 
   findOne(id: number) {
