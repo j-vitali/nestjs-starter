@@ -1,4 +1,4 @@
-import { PaginatedRequest } from "@core/interfaces/response.interface";
+import { PaginatedRequest } from "@core/interfaces/pagination.interface";
 import { IsOptional, IsString } from "class-validator";
 
 export class FilterUserDto extends PaginatedRequest {
