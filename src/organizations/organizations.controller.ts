@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from "@nestjs/common";
 import { OrganizationsService } from "./organizations.service";
 import { CreateOrganizationDto } from "./dto/create-organization.dto";
 import { UpdateOrganizationDto } from "./dto/update-organization.dto";
 import { MongoQuery, MongoQueryModel } from "nest-mongo-query-parser";
+import { OrganizationRTO } from "./rto/organization-rto";
+import { ConfigModule } from "@nestjs/config";
 
 @Controller("organizations")
 export class OrganizationsController {
@@ -14,9 +16,26 @@ export class OrganizationsController {
   }
 
   @Get()
-  findAll(@MongoQuery() query: MongoQueryModel) {
-    const organizations = this.organizationsService.findAll(query);
-    return organizations;
+  async findAll(@MongoQuery() query: MongoQueryModel): Promise<{ data: OrganizationRTO[]; pagination: { currentPage: number; totalPages: number; resultCount: number; totalCount: number } }> {
+    const { data, resultCount, totalCount: totalCount } = await this.organizationsService.findAll(query);
+
+    // Calculate pagination values
+    const currentPage = Math.floor(query.skip / query.limit) + 1;
+    const totalPages = Math.ceil(totalCount / query.limit ?? 100);
+    console.log("totalCount", totalCount);
+    console.log("query", query);
+    console.log("resultCount", resultCount);
+    console.log("totalPages", totalPages);
+    // Return data array and pagination schema
+    return {
+      data: data,
+      pagination: {
+        currentPage: 1 || currentPage,
+        totalPages: totalPages,
+        totalCount,
+        resultCount,
+      },
+    };
   }
 
   @Get(":id")

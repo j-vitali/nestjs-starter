@@ -5,6 +5,7 @@ import { Organization, OrganizationDocument } from './organization.schema';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { MongoQueryModel, MongoQueryParser } from 'nest-mongo-query-parser';
+import { OrganizationRTO } from './rto/organization-rto';
 
 @Injectable()
 export class OrganizationsService {
@@ -13,29 +14,24 @@ export class OrganizationsService {
     private organizationModel: Model<OrganizationDocument>,
   ) {}
 
-  async findAll(query: MongoQueryModel) {
-    const queryModel = this.organizationModel
+  async findAll(query: MongoQueryModel): Promise<{ data: OrganizationRTO[]; resultCount: number; totalCount: number }> {
+    // Find organizations based on query parameters
+    const organizationsQuery = this.organizationModel
       .find(query.filter)
       .limit(query.limit)
       .skip(query.skip)
       .sort(query.sort)
       .select(query.select);
 
-    const data = await queryModel.exec();
+    const [organizations, totalCount] = await Promise.all([
+      organizationsQuery.exec(),
+      this.organizationModel.countDocuments(query.filter),
+    ]);
 
-    // Calculate pagination values
-    const currentPage = Math.floor(query.skip / query.limit) + 1;
-    const totalPages = Math.ceil(await this.organizationModel.countDocuments(query.filter) / query.limit);
+    // Convert organizations to RTO
+    const dataRTOs = organizations.map(item => new OrganizationRTO(item.toObject()));
 
-    // Return data array and pagination schema
-    return {
-      data: data,
-      pagination: {
-        currentPage: currentPage,
-        totalPages: totalPages,
-        totalRecords: data.length,
-      },
-    };
+    return { data: dataRTOs, resultCount: organizations.length, totalCount };
   }
 
   create(createOrganizationDto: CreateOrganizationDto) {
